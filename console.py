@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 try:
                     val = float(val)
-                except:
+                except Exception:
                     pass
 
             params_dict.update({key: val})

@@ -20,7 +20,7 @@ class User(BaseModel, Base):
                               cascade='delete')
 
         reviews = relationship('Review', backref='user',
-                               cascase='delete')
+                               cascade='delete')
 
     else:
         email = ''

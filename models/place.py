@@ -5,6 +5,17 @@ from models import storage_type
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
+from sqlalchemy import Table
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=False)
+                      )
 
 
 class Place(BaseModel, Base):
@@ -32,6 +43,9 @@ class Place(BaseModel, Base):
 
         reviews = relationship('Review', backref='place', cascade='delete')
 
+        amenities = relationship('Amenity', secondary=place_amenity,
+                                 backref='place_amenities', viewonly=False)
+
     else:
         city_id = ""
         user_id = ""
@@ -53,3 +67,19 @@ class Place(BaseModel, Base):
 
             reviews_objs = models.storage.all(Review).values()
             return [rev for rev in review_objs if rev.place_id == self.id]
+
+        @property
+        def amenities(self):
+            """Get linked amenities."""
+
+            amenity_list = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, value):
+            """Sets linked amenities."""
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)

@@ -8,14 +8,13 @@ from models import storage_type
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
-
     if storage_type == 'db':
         __tablename__ = 'cities'
         name = Column(String(128), nullable=False)
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
 
-#        state = relationship('State', backref='cities', cascade='delete')
-
+        state = relationship('State', back_populates='cities', cascade='delete')
+        #places = relationship('Place', backref='cities', cascade='delete')
     else:
         state_id = ""
         name = ""

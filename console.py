@@ -124,17 +124,14 @@ class HBNBCommand(cmd.Cmd):
 
         params_dict = {}
         for i in range(len(params)):
-            tmp = params[i].split('=')
-            key = tmp[0]
-            val = tmp[1].replace('_', ' ')
-
-            if val.isdigit():
-                val = int(val)
+            key, val = tuple(params[i].split('='))
+            if val[0] == '"':
+                val = val.strip('"').replace("_", " ")
             else:
                 try:
-                    val = float(val)
-                except Exception:
-                    pass
+                    val = eval(val)
+                except (SyntaxError, NameError):
+                    continue
 
             params_dict.update({key: val})
 

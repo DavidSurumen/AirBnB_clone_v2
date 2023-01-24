@@ -33,16 +33,12 @@ class DBStorage:
     def all(self, cls=None):
         """Queries the current database session for all objects."""
         if cls is None:
-            objs_list = self.__session.query(User)
+            objs_list = self.__session.query(User).all()
 
-            print('\n\n=========================================')
-            print(type(objs_list))
-            print('\n===========================================\n')
-
-            objs_list.extend(self.__session.query(State))
-            objs_list.extend(self.__session.query(City))
-            objs_list.extend(self.__session.query(Place))
-            objs_list.extend(self.__session.query(Review))
+            objs_list.extend(self.__session.query(State).all())
+            objs_list.extend(self.__session.query(City).all())
+            objs_list.extend(self.__session.query(Place).all())
+            objs_list.extend(self.__session.query(Review).all())
         else:
             objs_list = self.__session.query(cls)
 
@@ -55,11 +51,7 @@ class DBStorage:
             self.__session.add(obj)
 
     def save(self):
-        """commits all changes of the current database session."""
-        print('\n------------------------------------------------')
-        print('Commiting session')
-        print('\n-------------------------------------------------')
-
+        """Commits all changes to the current database session."""
         self.__session.commit()
 
     def delete(self, obj=None):

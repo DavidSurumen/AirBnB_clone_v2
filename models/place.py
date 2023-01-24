@@ -8,7 +8,7 @@ from models.review import Review
 from sqlalchemy import Table
 
 
-place_amenity = Table('place_amenity', Base.metadata,
+relationship_table = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
                              ForeignKey('places.id'),
                              primary_key=True, nullable=False),
@@ -43,7 +43,7 @@ class Place(BaseModel, Base):
 
         reviews = relationship('Review', backref='place', cascade='delete')
 
-        amenities = relationship('Amenity', secondary=place_amenity,
+        amenities = relationship('Amenity', secondary='place_amenity',
                                  backref='place_amenities', viewonly=False)
 
     else:

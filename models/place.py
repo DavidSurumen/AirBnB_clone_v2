@@ -49,6 +49,6 @@ class Place(BaseModel, Base):
             """Returns the list of Review instances with place_id equal to the
             current Place.id.
             -This is the relationship between Place and Review."""
-            
+
             reviews_objs = storage.all(Review).values()
             return [rev for rev in review_objs if rev.place_id == self.id]

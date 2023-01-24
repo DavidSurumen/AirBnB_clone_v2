@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from models import storage_type, storage
+from models import storage_type
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
+from sqlalchemy.orm import relationship
 from models.review import Review
 
 
@@ -50,5 +51,5 @@ class Place(BaseModel, Base):
             current Place.id.
             -This is the relationship between Place and Review."""
 
-            reviews_objs = storage.all(Review).values()
+            reviews_objs = models.storage.all(Review).values()
             return [rev for rev in review_objs if rev.place_id == self.id]

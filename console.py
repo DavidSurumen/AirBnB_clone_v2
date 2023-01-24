@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.__init__ import storage, storage_type
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -148,7 +148,8 @@ class HBNBCommand(cmd.Cmd):
             new_instance = HBNBCommand.classes[clas]()
             new_instance.__dict__.update(params_dict)
 
-        storage.save()
+        #storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 
@@ -181,7 +182,10 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            if storage_type == 'file':
+                print(storage._FileStorage__objects[key])
+            else:
+                print('\nShow from db Not Yet Implemented !\n')
         except KeyError:
             print("** no instance found **")
 
@@ -228,18 +232,26 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            clas = args.split(' ')[0]  # remove possible trailing args
+            if clas not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            
+            #if storage_type == 'file':
+            #    for k, v in storage._FileStorage__objects.items():
+            #        if k.split('.')[0] == clas:
+            #            print_list.append(str(v))
+            obj_dct = storage.all(self.classes[clas])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            # for k, v in storage._FileStorage__objects.items():
+            #     print_list.append(str(v))
+            obj_dct = storage.all()
 
-        print(print_list)
+        for key in obj_dct:
+            print(str(obj_dct[key]))
+            #print_list.append(str(obj_dct[key]))
+
+        #print(print_list)
 
     def help_all(self):
         """ Help information for the all command """

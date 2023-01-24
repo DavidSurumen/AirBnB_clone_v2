@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String, Integer, ForeignKey, Float
@@ -44,7 +45,7 @@ class Place(BaseModel, Base):
         reviews = relationship('Review', backref='place', cascade='delete')
 
         amenities = relationship('Amenity', secondary='place_amenity',
-                                 backref='place_amenities', viewonly=False)
+                                 viewonly=False)
 
     else:
         city_id = ""
@@ -72,11 +73,8 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Get linked amenities."""
 
-            amenity_list = []
-            for amenity in list(models.storage.all(Amenity).values()):
-                if amenity.id in self.amenity_ids:
-                    amenity_list.append(amenity)
-            return amenity_list
+            objs = models.storage.all(Amenity).values()
+            return [obj for obj in objs if obj.id in self.amenity_ids]
 
         @amenities.setter
         def amenities(self, value):

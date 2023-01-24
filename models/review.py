@@ -16,7 +16,9 @@ class Review(BaseModel, Base):
                           ForeignKey('places.id', ondelete='CASCADE'),
                           nullable=False)
 
-        user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+        user_id = Column(String(60),
+                         ForeignKey('users.id', ondelete='CASCADE'),
+                         nullable=False)
 
     else:
         place_id = ""

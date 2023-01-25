@@ -61,3 +61,7 @@ class FileStorage:
                 if obj == FileStorage.__objects[key]:
                     del FileStorage.__objects[key]
                     return
+
+    def close(self):
+        """ close for JSON """
+        self.reload()

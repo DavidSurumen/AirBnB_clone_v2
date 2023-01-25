@@ -13,10 +13,8 @@ app.url_map.strict_slashes = False
 @app.route('/states_list')
 def all_states():
     """ display in html, list of states """
-    state_objs = storage.all(State)
-    states_list = sorted([state for state in state_objs.values()],
-                         key=lambda x: x.name)
-    return render_template('7-states_list.html', states=states_list)
+    state_list = storage.all(State)
+    return render_template('7-states_list.html', states=state_list)
 
 
 @app.teardown_appcontext

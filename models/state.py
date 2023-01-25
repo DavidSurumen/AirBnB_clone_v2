@@ -3,15 +3,12 @@
 from models.city import City
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String
 from models import storage_type
 
 
 class State(BaseModel, Base):
     """ State class """
-
-    def __init__(self):
-        super().__init__()
 
     if storage_type == 'db':
         __tablename__ = 'states'

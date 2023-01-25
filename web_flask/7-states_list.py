@@ -16,7 +16,7 @@ def all_states():
     state_objs = storage.all(State)
     states_list = sorted([state for state in state_objs.values()],
                          key=lambda x: x.name)
-    return render_template('states_id.html', states=states_list)
+    return render_template('7-states_list.html', states=states_list)
 
 
 @app.teardown_appcontext

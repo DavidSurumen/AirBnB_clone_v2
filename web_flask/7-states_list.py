@@ -1,25 +1,29 @@
 #!/usr/bin/python3
-"""Simple Flask app, with additional route"""
-from flask import Flask, abort, render_template
-from models import storage
+""" Flask app which lists all State objects
+"""
+from flask import Flask, render_template
 from models.state import State
+from models import storage
+
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 
 @app.route('/states_list')
-def run_all_states():
-    """Run all states"""
-    l_list = storage.all(State)
-    return render_template('7-states_list.html', l_list=l_list)
+def all_states():
+    """ display in html, list of states """
+    state_objs = storage.all(State)
+    states_list = sorted([state for state in state_objs.values()],
+                         key=lambda x: x.name)
+    return render_template('states_id.html', states=states_list)
 
 
 @app.teardown_appcontext
-def do_teardown(self):
-    """Closes session"""
+def tearDown(self):
+    """ removes the current sqlalchemy session. """
     storage.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

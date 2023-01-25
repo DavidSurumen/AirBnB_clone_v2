@@ -5,6 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
 from models import storage_type
+import models
 
 
 class State(BaseModel, Base):
@@ -19,7 +20,7 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    if storage_type == 'file':
+    if storage_type != 'db':
         @property
         def cities(self):
             cities_list = []
